@@ -1,0 +1,23 @@
+name: Release - Dry Run
+
+on:
+  push:
+    branches-ignore:
+      - v[0-9]+
+      - "**beta"
+
+jobs:
+  release-dry-run:
+    name: Release - Dry Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Inject slugs
+        uses: rlespinasse/github-slug-action@172fe43594a58b5938e248ec757ada60cdb17e18
+
+      - name: Semantic Release
+        run: npx --package @semantic-release/changelog@^5 --package @semantic-release/git@^9 --package semantic-release@^17 semantic-release --branches ${{ env.GITHUB_REF_SLUG_CS }} --dry-run
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,46 @@
+name: Create TFC Workspace Variable Action
+description: Creates a Terraform Cloud workspace variable
+inputs:
+  tfcToken:
+    description: A Terraform Cloud API token with access to manage the workspace
+    required: true
+  orgName:
+    description: The name of the Terraform Cloud organization where the workspace resides
+    required: true
+  workspaceName:
+    description: The name of the Terraform Cloud workspace
+    required: true
+  variableName:
+    description: The name of the variable
+    required: true
+  category:
+    description: The type of variable to create
+    required: true
+  sensitive:
+    description: Whether the variable should be treated by Terraform as sensitive
+    required: false
+    default: false
+  value:
+    description: The variable's initial value
+    required: false
+    default: ""
+runs:
+  using: "docker"
+  image: "docker://frostedcarbon/tfc-cli:v0.6.0"
+  args:
+    - workspaces
+    - variables
+    - create
+    - -token
+    - ${{ inputs.tfcToken }}
+    - -org
+    - ${{ inputs.orgName }}
+    - -workspace
+    - ${{ inputs.workspaceName }}
+    - -key
+    - ${{ inputs.variableName }}
+    - -value
+    - ${{ inputs.value }}
+    - -category
+    - ${{ inputs.category }}
+    - -sensitive=${{ inputs.sensitive }}

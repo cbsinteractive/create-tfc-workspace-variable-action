@@ -1,4 +1,4 @@
-name: Create Terraform Cloud Workspace Variable
+name: Create TFC Workspace Variable
 description: Creates a Terraform Cloud workspace variable
 inputs:
   tfcToken:
